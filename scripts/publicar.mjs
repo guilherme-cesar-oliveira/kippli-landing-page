@@ -14,7 +14,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ACCOUNT_MATCH = /guilherme/i; // conta do gh a ser usada
-const REPO_NAME = process.argv[2] || 'lp-kipplicrm';
+const REPO_NAME = process.argv[2] || 'kippli-landing-page';
 const BRANCH = 'main';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -73,9 +73,13 @@ if (!existsSync(resolve(ROOT, '.git'))) {
   run('git', ['init', '-b', BRANCH]);
 }
 run('git', ['checkout', '-B', BRANCH], { allowFail: true });
-run('git', ['add', '-A']);
-const pending = run('git', ['status', '--porcelain']);
-if (pending) {
+function commitIfNeeded() {
+  run('git', ['add', '-A']);
+  const pending = run('git', ['status', '--porcelain']);
+  if (!pending) {
+    console.log('  Nada novo para commitar.');
+    return;
+  }
   const commit = spawnSync('git', ['commit', '-m', 'Publica landing page do Kippli CRM com botão de login'], {
     cwd: ROOT,
     encoding: 'utf8',
@@ -89,9 +93,8 @@ if (pending) {
     );
   }
   console.log('  Commit criado.');
-} else {
-  console.log('  Nada novo para commitar.');
 }
+commitIfNeeded();
 
 // ---------------------------------------------------------------- repositório remoto
 log(`Garantindo o repositório ${fullName}`);
@@ -109,9 +112,32 @@ if (run('git', ['remote', 'get-url', 'origin'], { allowFail: true }) === null) {
   run('git', ['remote', 'set-url', 'origin', remoteUrl]);
 }
 
-// ---------------------------------------------------------------- push (usa as credenciais do gh)
-log('Enviando o código para o GitHub');
+// ---------------------------------------------------------------- sincroniza com o que já existe no remoto
+log('Sincronizando com o repositório remoto');
 run('gh', ['auth', 'setup-git', '--hostname', 'github.com'], { allowFail: true });
+const fetched = run('git', ['fetch', 'origin', BRANCH], { allowFail: true });
+if (fetched === null) {
+  console.log('  Remoto ainda sem a branch main (repositório vazio). Nada a sincronizar.');
+} else if (run('git', ['merge-base', 'HEAD', `origin/${BRANCH}`], { allowFail: true }) === null) {
+  // Históricos independentes (ex.: pasta sem .git). Mantém o histórico do remoto e
+  // coloca os arquivos desta pasta por cima, em um novo commit.
+  console.log('  O remoto já tem histórico próprio: mantendo o histórico e aplicando estes arquivos por cima.');
+  run('git', ['reset', '--soft', `origin/${BRANCH}`]);
+  commitIfNeeded();
+} else {
+  // Mesma origem: só traz o que estiver à frente no remoto.
+  const pulled = run('git', ['pull', '--rebase', 'origin', BRANCH], { allowFail: true });
+  if (pulled === null) {
+    run('git', ['rebase', '--abort'], { allowFail: true });
+    fail(
+      'O remoto tem alterações que conflitam com as locais.\n' +
+        'Resolva com:  git pull --rebase origin main   e rode  npm run publicar  de novo.',
+    );
+  }
+}
+
+// ---------------------------------------------------------------- push
+log('Enviando o código para o GitHub');
 run('git', ['push', '-u', 'origin', BRANCH], { inherit: true });
 
 // ---------------------------------------------------------------- GitHub Pages
