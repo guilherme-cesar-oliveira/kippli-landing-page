@@ -14,7 +14,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ACCOUNT_MATCH = /guilherme/i; // conta do gh a ser usada
-const REPO_NAME = process.argv[2] || 'kippli-landing-page';
+const REPO_NAME = process.argv[2] || 'lp-kipplicrm';
 const BRANCH = 'main';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
