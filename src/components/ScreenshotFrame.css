@@ -1,0 +1,42 @@
+.shot {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+}
+
+.shot--dark {
+  background: var(--color-dark-soft);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.shot__topbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.shot--dark .shot__topbar {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.shot__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-border);
+}
+
+.shot--dark .shot__dot {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

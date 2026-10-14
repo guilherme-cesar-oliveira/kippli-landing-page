@@ -1,0 +1,47 @@
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.compare-card {
+  padding: 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.compare-card--highlight {
+  background: var(--color-tint);
+  border-color: rgba(67, 46, 111, 0.35);
+  box-shadow: var(--shadow-md);
+}
+
+.compare-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--color-muted);
+}
+
+.compare-card__badge--highlight {
+  color: var(--color-primary);
+}
+
+.compare-card p {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--color-body);
+}
+
+@media (max-width: 720px) {
+  .compare {
+    grid-template-columns: 1fr;
+  }
+}

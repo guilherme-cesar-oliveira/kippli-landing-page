@@ -1,0 +1,25 @@
+.final-cta__card {
+  text-align: center;
+  padding: 64px 32px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  box-shadow: var(--shadow-md);
+}
+
+.final-cta__card h2 {
+  color: #fff;
+  font-size: clamp(26px, 3.4vw, 34px);
+  font-weight: 800;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.final-cta__card p {
+  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+}
+
+.final-cta__card .btn {
+  margin-top: 28px;
+}

@@ -1,0 +1,39 @@
+.metrics {
+  padding-top: 0;
+}
+
+.metrics-banner {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: 48px;
+  background: var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: 56px;
+}
+
+.eyebrow--dark {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-accent);
+}
+
+.metrics-banner__text h2 {
+  margin-top: 18px;
+  color: #fff;
+  font-size: clamp(26px, 3.2vw, 34px);
+  font-weight: 800;
+}
+
+.metrics-banner__text p {
+  margin-top: 16px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 15.5px;
+  line-height: 1.65;
+}
+
+@media (max-width: 860px) {
+  .metrics-banner {
+    grid-template-columns: 1fr;
+    padding: 36px 24px;
+  }
+}
